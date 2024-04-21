@@ -1,49 +1,22 @@
 <?php 
 
-const API_URL = "https://whenisthenextmcufilm.com/api";
+require_once('functions.php');
+require_once('const.php');
+// Trae todo el contenido
+// Como si lo pegara || Podriamos ponerlo varias veces y se ejecutaria ese numero de veces.
+// Con require_once, al contrario que solo requiere, se llama una sola vez.
 
-$ch = curl_init(API_URL); // crear sesión de curl
-// Obtener valor, no mostrarlo
-curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-$response = curl_exec($ch); // ejecutar
-
-// Transformarlo en un array y poder acceder a él
-$data = json_decode($response,true);
-
-curl_close($ch); // Cierra petición
-
+// include() e include_once() Trae el codigo, pero si no encuetra el archivo solo da un un warning. Mientras que el otro da un error fatal.
+// Usado si no es importante o opcional
+$data = getData(API_URL); 
+$message = getUntilMessage($data["days_until"]);
+// si metes otro tipo lo convierte automaticamente
+// activando strict_types fuerza a que respetes los tipos de datos
+//var_dump($data);
 
 ?>
 
-<head>
-    <title>Peliculas de marvel</title>
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <meta name="description" content="Cual es la proxima pelicula de marvel">
-</head>
+<?php renderTemplate('head',$data); ?>
+<?php renderTemplate('main',array_merge($data,["message" => $message])); ?>
+<?php renderTemplate('style',[]); ?>
 
-<main>
-    <section>
-        <h1>La proxima pelicula de Marvel</h1>
-        <img src=<?= $data["poster_url"]; ?> alt="Poster de <?= $data["title"]?>" style = "width:200px; border-radius: 8px">
-        <div class = "tarjet">
-            <h2><?= $data["title"] ?></h2>
-            <p>Estrenado el <?= $data["release_date"] ?></p>
-            <p>Proximamente: <?= $data["following_production"]["title"] ?></p>
-        </div>
-    </section>
-</main>
-
-<style>
-    :root{
-        color-scheme: light dark;
-    }
-    body, section {
-        display: grid;
-        place-items: center;
-    }
-
-    .tarjet{
-        text-align: center;
-    }
-
-</style>
