@@ -1,5 +1,5 @@
 <?php 
-
+require('./Classes/NextMovie.php');
 require_once('functions.php');
 require_once('const.php');
 // Trae todo el contenido
@@ -8,11 +8,16 @@ require_once('const.php');
 
 // include() e include_once() Trae el codigo, pero si no encuetra el archivo solo da un un warning. Mientras que el otro da un error fatal.
 // Usado si no es importante o opcional
-$data = getData(API_URL); 
-$message = getUntilMessage($data["days_until"]);
+//$data = getData(API_URL); 
+//$message = getUntilMessage($data["days_until"]);
 // si metes otro tipo lo convierte automaticamente
 // activando strict_types fuerza a que respetes los tipos de datos
 //var_dump($data);
+
+$movie1 = NextMovie::fetch_and_create_movie(API_URL);
+$data = $movie1 ->get_data();
+
+$message = $movie1 ->getUntilMessage();
 
 ?>
 

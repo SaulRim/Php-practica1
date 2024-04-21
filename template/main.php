@@ -6,7 +6,7 @@
         <div class = "tarjet">
             <h2><?= $title ?></h2>
             <p><?= $message ?></p>
-            <p>Proximamente: <?= $following_production["title"] ?></p>
+            <p>Proximamente: <?= $following_production ?></p>
         </div>
     </section>
 </main>
